@@ -9,10 +9,41 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import LockResetIcon from '@mui/icons-material/LockReset';
 import EmailIcon from '@mui/icons-material/Email';
 import KeyIcon from '@mui/icons-material/Key';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Alert } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 
 export default function Login() {
     // 状态管理当前显示的内容
     const [activeContent, setActiveContent] = React.useState<'login' | 'register' | 'forgot'>('login');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const router = useRouter();
+
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+
+        // 模拟API请求延迟
+        setTimeout(() => {
+            if (email === 'admin@gmail.com' && password === '1234567') {
+                setSuccess(true);
+                // 登录成功后跳转或执行其他操作
+                router.push('/dashboard'); // 示例：跳转到仪表盘
+            } else {
+                setError('Invalid email or password');
+            }
+            setLoading(false);
+        }, 1000);
+    };
+
+
     return (
         <Box
             sx={{
@@ -23,7 +54,7 @@ export default function Login() {
             }}
         >
 
-
+            {/* Logo 图片 */}
             <Box
                 sx={{
                     position: 'absolute',
@@ -34,7 +65,6 @@ export default function Login() {
                     bgcolor: 'white',
                 }}
             >
-                {/* Logo 图片 */}
                 <Image
                     src="/next.svg"
                     alt="Xtreme logo"
@@ -46,6 +76,7 @@ export default function Login() {
                 />
             </Box>
 
+            {/* 文字标题 */}
             <Box
                 sx={{
                     position: 'absolute',
@@ -55,8 +86,6 @@ export default function Login() {
                     alignItems: 'center',
                 }}
             >
-
-                {/* 文字标题 */}
                 <Typography
                     variant="h4"
                     sx={{
@@ -99,23 +128,17 @@ export default function Login() {
                     sx={{
                         width: 300,
                         height: 160,
-                        borderRadius: 1,
                         bgcolor: activeContent === 'login' ? '#4CD2E4' : 'transparent',
-                        color: activeContent === 'login' ? 'white' : '#4CD2E4',
-                        borderColor: '#4CD2E4',
-                        '&:hover': {
-                            bgcolor: '#4CD2E4',
-                            color: 'white'
-                        }
                     }}
                 >
+                    {/* 添加登录图标 */}
                     <AccountCircleIcon
                         sx={{
                             fontSize: 48,
-                            color: activeContent === 'login' ? 'white' : '#4CD2E4'
+                            color: 'white'
                         }}
                     />
-                    <Typography variant="h6">Login</Typography>
+                    <Typography variant="h6" color='white'>Login</Typography>
                 </Button>
 
                 <Button
@@ -124,24 +147,17 @@ export default function Login() {
                     sx={{
                         width: 300,
                         height: 160,
-                        borderRadius: 1,
                         bgcolor: activeContent === 'register' ? '#4CD2E4' : 'transparent',
-                        color: activeContent === 'register' ? 'white' : '#4CD2E4',
-                        borderColor: '#4CD2E4',
-                        '&:hover': {
-                            bgcolor: '#4CD2E4',
-                            color: 'white'
-                        }
                     }}
                 >
-
+                    {/* 添加注册图标 */}
                     <HowToRegIcon
                         sx={{
                             fontSize: 48,
-                            color: activeContent === 'register' ? 'white' : '#4CD2E4'
+                            color: 'white'
                         }}
                     />
-                    <Typography variant="h6">Register</Typography>
+                    <Typography variant="h6" color='white'>Register</Typography>
                 </Button>
 
                 <Button
@@ -150,25 +166,18 @@ export default function Login() {
                     sx={{
                         width: 300,
                         height: 160,
-                        borderRadius: 1,
                         bgcolor: activeContent === 'forgot' ? '#4CD2E4' : 'transparent',
-                        color: activeContent === 'forgot' ? 'white' : '#4CD2E4',
-                        borderColor: '#4CD2E4',
-                        '&:hover': {
-                            bgcolor: '#4CD2E4',
-                            color: 'white'
-                        }
                     }}
                 >
-
+                    {/* 添加忘记密码图标 */}
                     <LockResetIcon
                         sx={{
                             fontSize: 48,
-                            color: activeContent === 'forgot' ? 'white' : '#4CD2E4'
+                            color: 'white'
                         }}
                     />
 
-                    <Typography variant="h6">Forgot Password</Typography>
+                    <Typography variant="h6" color='white'>Forgot Password</Typography>
                 </Button>
             </Stack>
 
@@ -184,6 +193,7 @@ export default function Login() {
                     alignItems: 'center',
                 }}
             >
+                {/* 如果点击登录按钮，则跳转登录页面 */}
                 {activeContent === 'login' && (
                     <>
                         <Typography
@@ -199,12 +209,34 @@ export default function Login() {
                             Login Here
                         </Typography>
 
-                        <Box component="form" sx={{ width: '80%', maxWidth: 400 }}>
+                        {/* 登录所需要的input内容 */}
+                        <Box component="form" onSubmit={handleLogin} sx={{ width: '80%', maxWidth: 400 }}>
+
+                            {/* 错误提示 */}
+                            {error && (
+                                <Alert severity="error" sx={{ mb: 3 }}>
+                                    {error}
+                                </Alert>
+                            )}
+
+
+                            {/* 成功提示 */}
+                            {success && (
+                                <Alert severity="success" sx={{ mb: 3 }}>
+                                    Login successful! Redirecting...
+                                </Alert>
+                            )}
+
+
 
                             <TextField
                                 fullWidth
                                 label="Email"
                                 variant="outlined"
+
+                                // 验证Email是否正确
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 InputProps={{
                                     startAdornment: (
                                         <InputAdornment position="start">
@@ -220,6 +252,10 @@ export default function Login() {
                                 label="Password"
                                 type="password"
                                 variant="outlined"
+
+                                // 验证password是否正确
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                                 InputProps={{
                                     startAdornment: (
                                         <InputAdornment position="start">
@@ -231,17 +267,20 @@ export default function Login() {
                             />
 
                             <Button
+                                type="submit"
                                 fullWidth
                                 variant="contained"
                                 size="large"
+                                disabled={loading}
                                 sx={{ height: 48 }}
                             >
-                                Login
+                                {loading ? <CircularProgress size={24} /> : 'Login'}
                             </Button>
                         </Box>
                     </>
                 )}
 
+                {/* 如果点击注册按钮，则会跳到注册页面 */}
                 {activeContent === 'register' && (
                     <>
                         <Typography
@@ -257,8 +296,8 @@ export default function Login() {
                             Register Here
                         </Typography>
 
-                        <Box component="form" sx={{ width: '80%', maxWidth: 400, pt:10 }}>
-
+                        {/* 注册所需要的input内容 */}
+                        <Box component="form" sx={{ width: '80%', maxWidth: 400, pt: 10 }}>
                             <TextField
                                 fullWidth
                                 label="Email"
@@ -314,47 +353,49 @@ export default function Login() {
                         </Box>
                     </>
                 )}
+
+                {/* 如果点击忘记密码按钮，则跳到忘记密码的页面 */}
                 {activeContent === 'forgot' && (
                     <>
-                    <Typography
-                        variant="h3"
-                        sx={{
-                            position: 'absolute',
-                            top: '30%',
-                            color: 'black',
-                            textAlign: 'center', // 文字居中
-                            width: '100%',      // 确保transform居中生效
-                        }}
-                    >
-                        Reset Password Here
-                    </Typography>
-
-                    <Box component="form" sx={{ width: '80%', maxWidth: 400, pt:10 }}>
-
-                        <TextField
-                            fullWidth
-                            label="Email"
-                            variant="outlined"
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <EmailIcon />
-                                    </InputAdornment>
-                                ),
+                        <Typography
+                            variant="h3"
+                            sx={{
+                                position: 'absolute',
+                                top: '30%',
+                                color: 'black',
+                                textAlign: 'center', // 文字居中
+                                width: '100%',      // 确保transform居中生效
                             }}
-                            sx={{ mb: 3 }}
-                        />
-
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            size="large"
-                            sx={{ height: 48 }}
                         >
-                            Send reset email
-                        </Button>
-                    </Box>
-                </>
+                            Reset Password Here
+                        </Typography>
+
+                        {/* 忘记密码所需要的input内容 */}
+                        <Box component="form" sx={{ width: '80%', maxWidth: 400, pt: 10 }}>
+                            <TextField
+                                fullWidth
+                                label="Email"
+                                variant="outlined"
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <EmailIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                                sx={{ mb: 3 }}
+                            />
+
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                size="large"
+                                sx={{ height: 48 }}
+                            >
+                                Send reset email
+                            </Button>
+                        </Box>
+                    </>
                 )}
             </Box>
         </Box>
