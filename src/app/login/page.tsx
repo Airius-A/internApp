@@ -6,9 +6,9 @@ import Image from 'next/image';
 import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import LeftImagePanel from './component/leftImgPannel';
-import CenterButtonPanel from './component/centerButtonPannel';
-import RightContentPanel from './component/rightContentPannel';
+import LeftImagePanel from './component/LeftImgPannel';
+import CenterButtonPanel from './component/CenterButtonPannel';
+import RightContentPanel from './component/RightContentPannel';
 
 export default function Login() {
     const [activeContent, setActiveContent] = React.useState<'login' | 'register' | 'forgot'>('login');
