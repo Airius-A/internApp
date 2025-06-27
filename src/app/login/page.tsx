@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import LeftImagePanel from './component/LeftImgPannel';
 import CenterButtonPanel from './component/CenterButtonPannel';
 import RightContentPanel from './component/RightContentPannel';
+import WebtitleImg from './component/WebtitleImg';
 
 export default function Login() {
     const [activeContent, setActiveContent] = React.useState<'login' | 'register' | 'forgot'>('login');
@@ -45,48 +46,8 @@ export default function Login() {
                 minHeight: '100vh',
             }}
         >
-            {/* Logo 图片 */}
-            <Box
-                sx={{
-                    position: 'absolute',
-                    top: 16,
-                    left: 16,
-                    display: 'flex',
-                    alignItems: 'center',
-                    bgcolor: 'white',
-                }}
-            >
-                <Image
-                    src="/next.svg"
-                    alt="Xtreme logo"
-                    width={40}
-                    height={40}
-                    style={{
-                        objectFit: 'cover',
-                    }}
-                />
-            </Box>
-
-            {/* 文字标题 */}
-            <Box
-                sx={{
-                    position: 'absolute',
-                    top: 16,
-                    left: 70,
-                    display: 'flex',
-                    alignItems: 'center',
-                }}
-            >
-                <Typography
-                    variant="h4"
-                    sx={{
-                        fontFamily: 'Arial, sans-serif',
-                        fontWeight: 'bold',
-                        fontStyle: 'italic',
-                    }}>
-                    Xtreme
-                </Typography>
-            </Box>
+            {/* 网站名字和网站logo */}
+            <WebtitleImg />
 
             {/* 左侧图片框 */}
             <LeftImagePanel imageSrc="/next.svg" altText="Next.js Logo" />

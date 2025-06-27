@@ -1,5 +1,4 @@
 import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Switch } from "@mui/material"
-import InboxIcon from '@mui/icons-material/Inbox';
 import { Home } from "@mui/icons-material";
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
