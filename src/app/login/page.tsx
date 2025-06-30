@@ -2,8 +2,6 @@
 
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Image from 'next/image';
-import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import LeftImagePanel from './component/LeftImgPannel';

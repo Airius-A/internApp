@@ -4,7 +4,7 @@ export default function Feed(){
     return (
         <Box
             bgcolor="darkblue"
-            flex={2}
+            flex={6}
             p={2}
         >
         </Box>

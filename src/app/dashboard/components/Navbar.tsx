@@ -3,6 +3,8 @@ import { useState } from "react";
 import { AppBar, styled, Toolbar, Typography, Box, InputBase, Badge, Avatar, Menu, MenuItem } from "@mui/material";
 import EmailIcon from '@mui/icons-material/Email';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import Image from "next/image"
+
 
 const StyledToolBar = styled(Toolbar)({
     display: "flex",
@@ -30,7 +32,27 @@ export default function Navbar() {
     return (
         <AppBar position="sticky">
             <StyledToolBar>
-                <Typography variant="h4">Xtreme</Typography>
+
+                {/* logo和标题 */}
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}> {/* 控制 logo 和标题的间距 */}
+                    <Image
+                        src="/next.svg"
+                        alt="Xtreme logo"
+                        width={40}
+                        height={40}
+                        style={{ objectFit: 'cover' }}
+                    />
+                    <Typography
+                        variant="h4"
+                        sx={{
+                            fontFamily: 'Arial, sans-serif',
+                            fontWeight: 'bold',
+                            fontStyle: 'italic',
+                        }}>
+                        Xtreme
+                    </Typography>
+
+                </Box>
                 <Search><InputBase placeholder="Search..." /></Search>
                 <Icons>
                     <Badge badgeContent={4} color="error">
@@ -53,7 +75,7 @@ export default function Navbar() {
                 id="demo-positioned-menu"
                 aria-labelledby="demo-positioned-button"
                 open={open}
-                onClose={e=>setOpen(false)}
+                onClose={e => setOpen(false)}
                 anchorOrigin={{
                     vertical: 'top',
                     horizontal: 'right',

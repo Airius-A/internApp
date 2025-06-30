@@ -2,7 +2,6 @@
 
 import Navbar from "./components/Navbar"
 import Sidebar from "./components/Sidebar"
-import Rightbar from "./components/Rightbar"
 import Feed from "./components/Feed"
 import { Box, createTheme, Stack, ThemeProvider } from "@mui/material"
 import { useState } from "react"
@@ -32,7 +31,6 @@ export default function Dashboard() {
                 >
                     <Sidebar setMode={setMode} mode={mode}/>
                     <Feed />
-                    <Rightbar />
                 </Stack>
             </Box>
         </ThemeProvider>
