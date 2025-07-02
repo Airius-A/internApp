@@ -2,7 +2,7 @@
 import { Box, Typography } from "@mui/material";
 import List from "../SidebarElement/User/List"
 import Profile from "../SidebarElement/User/Profile";
-import Company from "../SidebarElement/Company1";
+import Company from "../SidebarElement/Company";
 import Create from "../SidebarElement/User/Create";
 import Default from "../SidebarElement/Dashboard/Default";
 
