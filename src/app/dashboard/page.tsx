@@ -1,13 +1,13 @@
 "use client"
 
-import Navbar from "./components/Navbar"
-import Sidebar from "./components/Sidebar"
-import Feed from "./components/Feed"
+import Navbar from "../pageElement/Navbar"
+import Sidebar from "../pageElement/Sidebar"
+import Feed from "../pageElement/Feed"
 import { Box, createTheme, Stack, ThemeProvider } from "@mui/material"
 import { useState } from "react"
 
 export default function Dashboard() {
-    const [mode, setMode] = useState("dark") // 建议小写 "dark"（MUI 标准）
+    const [mode, setMode] = useState("dark")
 
     const theme = createTheme({
         palette: {

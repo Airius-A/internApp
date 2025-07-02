@@ -1,10 +1,10 @@
 // Feed.tsx
 import { Box, Typography } from "@mui/material";
-import List from "./User/List"
-import Profile from "./User/Profile";
-import Company from "./Company";
-import Create from "./User/Create";
-import Default from "./Dashboard/Default";
+import List from "../SidebarElement/User/List"
+import Profile from "../SidebarElement/User/Profile";
+import Company from "../SidebarElement/Company1";
+import Create from "../SidebarElement/User/Create";
+import Default from "../SidebarElement/Dashboard/Default";
 
 
 interface FeedProps {
