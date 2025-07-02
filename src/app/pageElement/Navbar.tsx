@@ -20,9 +20,21 @@ const Search = styled("div")(({ theme }) => ({
 }))
 
 const Icons = styled(Box)(({ theme }) => ({
-    display: "flex",
+    display: "none",
     gap: "20px",
-    alignItems: "center"
+    alignItems: "center",
+    [theme.breakpoints.up("sm")]: {
+        display: "flex"
+    }
+}))
+
+const UserBox = styled(Box)(({ theme }) => ({
+    display: "flex",
+    gap: "10px",
+    alignItems: "center",
+    [theme.breakpoints.up("sm")]: {
+        display: "none"
+    }
 }))
 
 export default function Navbar() {
@@ -35,19 +47,23 @@ export default function Navbar() {
 
                 {/* logo和标题 */}
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}> {/* 控制 logo 和标题的间距 */}
-                    <Image
-                        src="/next.svg"
-                        alt="Xtreme logo"
-                        width={40}
-                        height={40}
-                        style={{ objectFit: 'cover' }}
-                    />
+                    {/* 布局处理 */}
+                    <Box sx={{ display: { xs: "block", sm: "block" } }}>
+                        <Image
+                            src="/next.svg"
+                            alt="Xtreme logo"
+                            width={40}
+                            height={40}
+                            style={{ objectFit: 'cover' }}
+                        />
+                    </Box>
                     <Typography
                         variant="h4"
                         sx={{
                             fontFamily: 'Arial, sans-serif',
                             fontWeight: 'bold',
                             fontStyle: 'italic',
+                            display: { xs: "none", sm: "block" }
                         }}>
                         Xtreme
                     </Typography>
@@ -67,8 +83,14 @@ export default function Navbar() {
                         src="/1.jpg"
                         onClick={(e) => setOpen(true)}
                     />
-
                 </Icons>
+                
+                <UserBox>
+                    <Avatar sx={{ width: 30, height: 30 }}
+                        src="/1.jpg"
+                        onClick={(e) => setOpen(true)}
+                    />
+                </UserBox>
             </StyledToolBar>
 
             <Menu
