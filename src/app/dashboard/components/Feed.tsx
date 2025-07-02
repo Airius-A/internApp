@@ -1,12 +1,53 @@
-import { Box } from "@mui/material";
+// Feed.tsx
+import { Box, Typography } from "@mui/material";
+import List from "./User/List"
+import Profile from "./User/Profile";
+import Company from "./Company";
+import Create from "./User/Create";
+import Default from "./Dashboard/Default";
 
-export default function Feed(){
+
+interface FeedProps {
+    activeTab: string; // 当前选中的菜单项标识
+}
+
+export default function Feed({ activeTab }: FeedProps) {
+    // 根据 activeTab 渲染不同内容
+    const renderContent = () => {
+        switch (activeTab) {
+            case "default":
+                return (
+                    <Default />
+                );
+            case "profile":
+                return (
+                    <Profile />
+                );
+            case "create":
+                return (
+                    <Create />
+                );
+            case "list":
+                return (
+                    <List />
+                );
+            case "company":
+                return (
+                    <Company />
+                );
+            default:
+                return <Typography>Select a menu item to view content</Typography>;
+        }
+    };
+
     return (
         <Box
-            bgcolor="darkblue"
+            bgcolor="lightblue"
             flex={6}
             p={2}
+            color="black"
         >
+            {renderContent()}
         </Box>
-    )
+    );
 }

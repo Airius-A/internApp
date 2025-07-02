@@ -14,6 +14,7 @@ export default function Dashboard() {
             mode: mode === "dark" ? "dark" : "light" // 确保值是 "light" 或 "dark"
         }
     })
+    const [activeTab, setActiveTab] = useState("default"); // 默认选中 list
 
     return (
         <ThemeProvider theme={theme}>
@@ -29,8 +30,8 @@ export default function Dashboard() {
                     justifyContent="space-between"
                     sx={{ pt: 2 }} // 添加顶部内边距
                 >
-                    <Sidebar setMode={setMode} mode={mode}/>
-                    <Feed />
+                    <Sidebar setMode={setMode} mode={mode} setActiveTab={setActiveTab}/>
+                    <Feed activeTab={activeTab}/>
                 </Stack>
             </Box>
         </ThemeProvider>
