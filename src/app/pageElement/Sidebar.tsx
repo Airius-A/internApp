@@ -1,4 +1,5 @@
-import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Switch } from "@mui/material"
+import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Switch, Drawer, IconButton, useMediaQuery, useTheme } from "@mui/material"
+import MenuIcon from '@mui/icons-material/Menu'; // 汉堡菜单图标
 import { Home } from "@mui/icons-material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
@@ -17,10 +18,18 @@ import BusinessIcon from '@mui/icons-material/Business';
 interface SidebarProps {
     mode: string;
     setMode: Dispatch<SetStateAction<string>>;
-    setActiveTab: Dispatch<SetStateAction<string>>; // 新增：用于更新选中的菜单项
+    setActiveTab: Dispatch<SetStateAction<string>>;
 }
 
 export default function Sidebar({ mode, setMode, setActiveTab }: SidebarProps) {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // 检测是否为移动设备
+    const [mobileOpen, setMobileOpen] = React.useState(false); // 控制移动端抽屉的开关
+
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
+
     const handleThemeChange = () => {
         setMode(mode === "light" ? "dark" : "light");
     };
@@ -36,18 +45,15 @@ export default function Sidebar({ mode, setMode, setActiveTab }: SidebarProps) {
         setExpanded(prev => ({ ...prev, [key]: !prev[key] }));
     };
 
-    // 根据 mode 动态设置图标颜色
     const getIconColor = () => {
         return mode === "dark" ? "white" : "black";
     };
 
-    // 根据 mode 动态设置 secondary 文本颜色
     const getSecondaryColor = () => {
         return mode === "dark" ? "rgba(255, 255, 255, 0.7)" : "rgba(0, 0, 0, 0.6)";
     };
 
-    // 动态创建 theme，根据 mode 调整 secondary 颜色
-    const theme = createTheme({
+    const muiTheme = createTheme({
         components: {
             MuiListItemText: {
                 styleOverrides: {
@@ -59,14 +65,14 @@ export default function Sidebar({ mode, setMode, setActiveTab }: SidebarProps) {
         },
     });
 
-    return (
+    const drawerContent = (
         <Box
             bgcolor={mode === "dark" ? "#121212" : "white"}
             flex={1}
             p={2}
             color={mode === "dark" ? "white" : "black"}
         >
-            <ThemeProvider theme={theme}>
+            <ThemeProvider theme={muiTheme}>
                 <List>
                     {/* Dashboard 的按钮 */}
                     <ListItemButton onClick={() => handleToggle("dashboard")} component="a" href="#dashboard">
@@ -185,5 +191,41 @@ export default function Sidebar({ mode, setMode, setActiveTab }: SidebarProps) {
                 </List>
             </ThemeProvider>
         </Box>
+    );
+
+    return (
+        <>
+            {/* 移动端汉堡菜单按钮 */}
+            {isMobile && (
+                <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    edge="start"
+                    onClick={handleDrawerToggle}
+                    sx={{ position: 'fixed', top: 90, left: 10, zIndex: 1200 }}
+                >
+                    <MenuIcon />
+                </IconButton>
+            )}
+    
+            {/* 统一使用 Drawer 组件渲染侧边栏 */}
+            <Drawer
+                variant={isMobile ? "temporary" : "permanent"}
+                open={isMobile ? mobileOpen : true}
+                onClose={handleDrawerToggle}
+                ModalProps={{
+                    keepMounted: true,
+                }}
+                sx={{
+                    '& .MuiDrawer-paper': {
+                        width: 240,
+                        boxSizing: 'border-box',
+                        position: 'relative', // 修复桌面端布局问题
+                    },
+                }}
+            >
+                {drawerContent}
+            </Drawer>
+        </>
     );
 }
