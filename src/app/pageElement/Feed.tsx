@@ -5,6 +5,8 @@ import Profile from "../SidebarElement/User/Profile";
 import Company from "../SidebarElement/Company";
 import Create from "../SidebarElement/User/Create";
 import Default from "../SidebarElement/Dashboard/Default";
+import Analytics from "../SidebarElement/Dashboard/Analytics";
+
 
 
 interface FeedProps {
@@ -34,6 +36,10 @@ export default function Feed({ activeTab }: FeedProps) {
             case "company":
                 return (
                     <Company />
+                );
+            case "analytics":
+                return (
+                    <Analytics />
                 );
             default:
                 return <Typography>Select a menu item to view content</Typography>;

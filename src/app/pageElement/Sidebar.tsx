@@ -89,7 +89,7 @@ export default function Sidebar({ mode, setMode, setActiveTab }: SidebarProps) {
                             </ListItemButton>
                         </List>
                         <List component="div" disablePadding>
-                            <ListItemButton component="a" href="#analytics" sx={{ pl: 4, left: "40px" }}>
+                            <ListItemButton component="a" href="#analytics" sx={{ pl: 4, left: "40px" }} onClick={() => setActiveTab("analytics")}>
                                 <ListItemText secondary="Analytics" />
                             </ListItemButton>
                         </List>
@@ -120,7 +120,7 @@ export default function Sidebar({ mode, setMode, setActiveTab }: SidebarProps) {
                             </ListItemButton>
                         </List>
                         <List component="div" disablePadding>
-                            <ListItemButton component="a" href="#Edit" sx={{ pl: 4, left: "40px" }}>
+                            <ListItemButton component="a" href="#Edit" sx={{ pl: 4, left: "40px" }} onClick={() => setActiveTab("Edit")}>
                                 <ListItemText secondary="Edit" />
                             </ListItemButton>
                         </List>
