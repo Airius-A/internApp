@@ -12,9 +12,18 @@ import React from "react";
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { Padding } from "@mui/icons-material";
+import { Pie } from "react-chartjs-2";
+
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
 
 
 // 模拟数据
@@ -253,7 +262,7 @@ ChartJS.register(
     Legend
 );
 
-// 示例数据
+// 示例数据 (折线图的数据)
 const labels = ["2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"];
 const data = {
     labels,
@@ -290,11 +299,98 @@ const ChartJSLineChart = () => {
     return <Line data={data} options={options} />;
 };
 
+
+// 饼图数据
+// 注册必需的 ChartJS 组件
+ChartJS.register(ArcElement, Tooltip, Legend);
+// 示例数据
+
+const data2 = {
+    labels: ["S", "A", "B", "C"],
+    datasets: [
+        {
+            label: "# Level Ratio",
+            data: [2, 5, 10, 16],
+            backgroundColor: [
+                "rgb(255, 238, 0)",
+                "rgb(54, 163, 235)",
+                "rgb(255, 207, 86)",
+                "rgb(75, 192, 192)",
+            ],
+            borderColor: [
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+                "rgba(75, 192, 192, 1)",
+            ],
+            borderWidth: 1,
+        },
+    ],
+};
+
+const options2 = {
+    responsive: true,
+    plugins: {
+        legend: {
+            position: "top" as const,
+            labels: {
+                color: "grey", // 图例文字颜色
+                font: {
+                    size: 12,    // 图例文字大小
+
+                },
+            },
+        },
+        title: {
+            display: true,
+            text: "Company rank ratio",
+            align: 'start',
+            font: {
+                size: 15,
+            },
+        },
+        tooltip: {
+            callbacks: {
+                label: (context) => {
+                    const label = context.label || "";
+                    const value = context.raw || 0;
+                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                    const percentage = Math.round((value / total) * 100);
+                    return `${label}: ${value} (${percentage}%)`;
+                },
+            },
+        },
+    },
+};
+
+const PieChart = () => {
+    return <Pie data={data2} options={options2} />;
+};
+
+
+
+function createData(
+    Rank: string,
+    Amount: number,
+    Ratio: string,
+) {
+    return { Rank, Amount, Ratio };
+}
+
+const rows = [
+    createData('S Rank', 2, '6%'),
+    createData('A Rank', 5, '15%'),
+    createData('B Rank', 10, '30%'),
+    createData('C Rank', 16, '48%'),
+];
+
+
+
 export default function Default() {
 
     return (
         <Box p={3}>
-            {/* 页面主名称（如果需要可以放在这里） */}
+            {/* 页面主名称 */}
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
                 <Typography variant="h4" fontWeight={600} mr={2}>
                     Default Dashboard
@@ -336,7 +432,7 @@ export default function Default() {
                     <Card
                         variant="elevation"
                         sx={{
-                            width: "100%", // 填充父容器
+                            width: "1150px", // 填充父容器
                             height: "318px",
                             marginBottom: "20px",
                             display: "flex", // 启用flex布局
@@ -354,29 +450,80 @@ export default function Default() {
                     </Card>
 
                     {/* 以饼图的形式显示数据 TODO */}
-                    <Box marginTop={3}>
-                    <Card
-                        variant="elevation"
-                        sx={{
-                            width: "100%", // 填充父容器
-                            height: "318px",
-                            marginBottom: "20px",
-                            display: "flex", // 启用flex布局
-                            flexDirection: "column"
-                        }}
-                    >
-                        <Box sx={{
-                            padding: 2,
-                            flex: 1, // 填充剩余高度
-                            minHeight: 0, // 修复flex容器溢出问题
-                            width: "100%"
-                        }}>
-                            <ChartJSLineChart />
-                        </Box>
-                    </Card>
+                    <Box marginTop={3} display="flex">
+                        <Card
+                            variant="elevation"
+                            sx={{
+                                width: "100%", // 填充父容器
+                                height: "318px",
+                                marginBottom: "20px",
+                                display: "flex", // 启用flex布局
+                                flexDirection: "column"
+                            }}
+                        >
+                            <Box display="flex"
+                                sx={{
+                                    padding: 2,
+                                    flex: 1, // 填充剩余高度
+                                    minHeight: 0, // 修复flex容器溢出问题
+                                    width: "100%"
+                                }}>
+                                <PieChart />
+
+                                {/* 饼图的表格 */}
+                                {/* 调整表格容器宽度 */}
+                                <Box sx={{ width: "50%", marginLeft: 20, marginTop: 7 }}>
+                                    {/* 表格的名字 */}
+                                    <Box >
+                                        <Typography
+                                            sx={{
+                                                fontSize: "15px",
+                                                color: "gray",
+                                                fontWeight: "bold"
+                                            }}>
+                                            Company Rank Ratio Table
+                                        </Typography>
+                                    </Box>
+
+                                    <TableContainer component={Paper}>
+                                        <Table
+                                            sx={{
+                                                minWidth: 'auto', // 改为auto以适应内容
+                                                '& .MuiTableCell-root': {
+                                                    padding: '8px', // 减小单元格内边距
+                                                    fontSize: '0.875rem' // 减小字体大小
+                                                }
+                                            }}
+                                            aria-label="simple table"
+                                        >
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell>Rank</TableCell>
+                                                    <TableCell align="right">Amount</TableCell>
+                                                    <TableCell align="right">Ratio</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {rows.map((row) => (
+                                                    <TableRow
+                                                        key={row.Rank}
+                                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                    >
+                                                        <TableCell component="th" scope="row">
+                                                            {row.Rank}
+                                                        </TableCell>
+                                                        <TableCell align="right">{row.Amount}</TableCell>
+                                                        <TableCell align="right">{row.Ratio}</TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                </Box>
+                            </Box>
+                        </Card>
                     </Box>
                 </Box>
-
             </Box>
 
         </Box>
