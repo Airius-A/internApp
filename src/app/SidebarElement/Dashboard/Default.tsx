@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import Card from "@mui/material/Card";
@@ -14,6 +14,37 @@ import { CompanyTrendChart } from "./defaultComponent/CompanyTrendChart";
 import { CompanyRankPieChart } from "./defaultComponent/CompanyRankPieChart";
 import { CompanyRankTable } from "./defaultComponent/CompanyRankTable";
 import CompanyBarChart from "./defaultComponent/CompanyBarChart";
+import Tooltip from "@mui/material/Tooltip";
+
+//tab组件相关代码
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
 
 export default function Default() {
   const [data, setData] = useState<any[]>([]);
@@ -30,6 +61,13 @@ export default function Default() {
         });
       });
   }, []);
+
+  // tab的代码
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   return (
     <Box p={3}>
@@ -127,9 +165,40 @@ export default function Default() {
           </Box>
         </Box>
       </Box>
-      {/* 以柱状图的形式显示数据 */}
-      <Box marginTop={3} gap={2}>
-        <CompanyBarChart data={data} />
+
+      <Box sx={{ width: "100%" }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+          sx={{
+            "& .MuiTab-root": {
+              color: "black",
+              "&.Mui-selected": {
+                color: "black",
+                fontWeight: "bold",
+              },
+            },
+          }}
+        >
+          <Tooltip title="Company Bar Chart Analysis (with filter)">
+            <Tab label="Company Bar Chart" {...a11yProps(0)} />
+          </Tooltip>
+          <Tooltip title="Company Bubble Chart Analysis">
+            <Tab label="Company Bubble Chart" {...a11yProps(1)} />
+          </Tooltip>
+        </Tabs>
+        <CustomTabPanel value={value} index={0}>
+          <Box display={"flex"} alignItems={"center"}>
+            {/* 以柱状图的形式显示数据 */}
+            <CompanyBarChart data={data} />
+          </Box>
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          {/* 以泡泡图的形式显示数据 */}
+          {/* Todo */}
+          <CompanyRankPieChart />
+        </CustomTabPanel>
       </Box>
     </Box>
   );

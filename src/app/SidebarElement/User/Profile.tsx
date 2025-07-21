@@ -1,7 +1,12 @@
-import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import Papa from "papaparse";
+import React, { useState, useEffect } from "react";
+
+import CompanyBarChart from "../Dashboard/defaultComponent/CompanyBarChart";
+import { CompanyRankPieChart } from "../Dashboard/defaultComponent/CompanyRankPieChart";
+import { CompanyTrendChart } from "../Dashboard/defaultComponent/CompanyTrendChart";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -33,6 +38,21 @@ function a11yProps(index: number) {
 }
 
 export default function BasicTabs() {
+  const [data, setData] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("/data/companies.csv")
+      .then((res) => res.text())
+      .then((text) => {
+        Papa.parse(text, {
+          header: true,
+          dynamicTyping: true,
+          skipEmptyLines: true,
+          complete: (result) => setData(result.data),
+        });
+      });
+  }, []);
+
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -53,13 +73,13 @@ export default function BasicTabs() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        Item One
+        <CompanyTrendChart />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        Item Two
+        <CompanyRankPieChart />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        Item Three
+        <CompanyBarChart data={data} />
       </CustomTabPanel>
     </Box>
   );

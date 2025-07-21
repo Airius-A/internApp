@@ -223,7 +223,7 @@ export default function CompanyBarChart({ data }: CompanyBarChartProps) {
       </Box>
 
       {/* 右侧过滤器区域 - 占1/4宽度 */}
-      <Box width={"557px"}>
+      <Box width={"500px"}>
         <Box
           sx={{
             backgroundColor: "#f9f9f9",
