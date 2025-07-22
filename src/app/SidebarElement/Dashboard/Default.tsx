@@ -15,6 +15,7 @@ import { CompanyRankPieChart } from "./defaultComponent/CompanyRankPieChart";
 import { CompanyRankTable } from "./defaultComponent/CompanyRankTable";
 import CompanyBarChart from "./defaultComponent/CompanyBarChart";
 import Tooltip from "@mui/material/Tooltip";
+import BubblePackChart from "./defaultComponent/BubbleChart";
 
 //tab组件相关代码
 interface TabPanelProps {
@@ -45,10 +46,9 @@ function a11yProps(index: number) {
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
-
 export default function Default() {
+  // company 的数据
   const [data, setData] = useState<any[]>([]);
-
   useEffect(() => {
     fetch("/data/companies.csv")
       .then((res) => res.text())
@@ -60,6 +60,14 @@ export default function Default() {
           complete: (result) => setData(result.data),
         });
       });
+  }, []);
+
+  // bubble的数据
+  const [bubbleData, setbubbleData] = useState(null);
+  useEffect(() => {
+    fetch("/data/bubbles.json")
+      .then((res) => res.json())
+      .then((d) => setbubbleData(d));
   }, []);
 
   // tab的代码
@@ -196,8 +204,9 @@ export default function Default() {
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           {/* 以泡泡图的形式显示数据 */}
-          {/* Todo */}
-          <CompanyRankPieChart />
+          <Box width={"1500px"}>
+            <BubblePackChart data={bubbleData} />
+          </Box>
         </CustomTabPanel>
       </Box>
     </Box>
